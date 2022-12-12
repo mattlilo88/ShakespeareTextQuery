@@ -1,0 +1,69 @@
+README for HW1 CSE 101:
+
+Matthew Lo, October 2022
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Code Files: Makefile, bard.cpp, bard_functions.cpp, bard_functions.h
+Test Files: simple-input.txt, simple-output.txt, more-input.txt, more-output.txt
+Student Test Files(thanks to Andrew Hu): even-more-input.txt even-more-output.txt https://piazza.com/class/l8dis4kef4h2au/post/115
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Overview:
+In this homework, the code is split up into three different files, bard.cpp, bard_functions.cpp, and bard_functions.h. 
+
+My approach: Store all the words from the shakespeare-cleaned5.txt into an array of LinkedList by length. Then to make finding desired words
+easier, I sort each LinkedList (with Selection Sort) by decreasing order of frequency and increasing lexicographic order.
+Then I process the input file and search for the word based on length and rank through the LinkedLists array.
+If the desired word is found, I write that word to the given output file. If the word does not exist, I write "-" to the given output file
+
+bard.cpp 
+		In bard.cpp is where main() is. In main() I am handling the storing of the words from the shakespeare-cleaned5.txt and reading/writing from input/output files. 
+		I first check to see if the user provides three arguments, the executable, the input file and the output file. If not, I throw an error.
+		The way I am storing the words is through an array of LinkedLists. Each array element is initialized to a new LinkedList. Then after this
+		I loop through the shakespeare-cleaned5.txt, processing each word and storing it into its respective LinkedList in the LinkedList array.
+		After this the LinkedList array officially has stored all the words (excluding duplicates), and then I sort all the LinkedLists.
+		Then I begin processing the given input file and writing to the given output file. I loop through each line of the input file, parsing
+		it so I end up with two variables, the length and the rank, which will be used towards finding the corresponding word in the LinkedList array.
+		Then with the length and rank data, I search the LinkedList array for the word. If the word is found, then write the word into the given
+		output file. If the word is not found, then write "-" into the given output file. After the looping through the entirety of the input file,
+		the output file is filled with the correct outputs depending on the query.
+
+bard_functions.cpp 
+	In bard_functions.cpp is where I store all the functions dealing with LinkedLists
+
+	LinkedList(): This is just a simple constructor that sets the head of a new LinkedList equal to NULL
+
+	void sort(LinkedList *start): In this function it takes a given LinkedList and sorts it with Selection sort. It sorts all the 
+	elements by decreasing order of frequency and increasing lexicographic order. It iterates through the length of 
+	the given LinkedList and sorts the elements through passes where you find the current possible Node with the highest frequency/lexicographic order
+	and then move it to the desired index.
+
+	bool checkWord(string word, LinkedList *start): In this function it takes a given word and the given LinkedList and checks to see the given word
+	is in the given LinkedList. To check, I iterated through the LinkedList trying to find the given word. If the word was found, then I would update
+	the word's frequency then return true. Otherwise, return false if the word was not found in the LinkedList
+
+	void insert(string word, LinkedList *start): In this function it takes a given word and the given LinkedList and inserts the word to the head of the LinkedList.
+	I first call the checkword() function at the start to see if the given word is already in the given LinkedList. If so, then the checkword() function
+	will handle incrementing the frequency of the word and I do nothing else with the insert() function. Checking for the word will remove any duplicates of the word in 
+	the given LinkedList. Otherwise, if the given word is NOT in the given LinkedList, then create a new Node that stores the given word and insert it at the head 
+	of the given LinkedList.
+
+bard_functions.h
+	This is the header file that contains the implementation of the struct Node and the LinkedList class. In the struct Node, it stores the respective string word,
+	the int frequency of the word, and the Node *next that points to the next Node. In the LinkedList class, it contains the head stored as a struct Node and the
+	constructor.
+	Also in the header file is the declarations of the functions from bard_functions.cpp so I could use it in bard.cpp.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Sources I used for my code:
+https://stackoverflow.com/questions/3246803/why-use-ifndef-class-h-and-define-class-h-in-h-file-but-not-in-cpp //Used to build header file
+https://stackoverflow.com/questions/21420772/array-of-linked-lists-c //Used to get an understanding of how array of LinkedList works
+https://cplusplus.com/doc/tutorial/files/ //Used to understand how to stream for input/output files and read files
+https://www.tutorialspoint.com/c_standard_library/c_function_strtok.htm //Used to understand how to split a string
+https://www.tutorialspoint.com/c_standard_library/c_function_strtol.htm //Used to understand how to convert a string to an int
+https://www.tutorialspoint.com/c_standard_library/c_function_strtoul.htm //Used to understand how to convert a string that could contain a negative number into an int.
+https://www.geeksforgeeks.org/strdup-strdndup-functions-c/#:~:text=strdup()%20%3A&text=This%20function%20returns%20a%20pointer,to%20the%20duplicated%20string%20s. //Used to understand how to duplicate a C-style string
+https://www.geeksforgeeks.org/selection-sort/ //Used to understand the steps in selection sort.
+Used Professor Seshadhri's LinkedList Class implementation and input error checker from the "Linked list" codio
+Used similar Makefile from "Hello world, with bells and whistles" codio
